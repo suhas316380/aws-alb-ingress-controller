@@ -179,7 +179,7 @@ EOF
   if [[ "${get_annotation}" == "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}" ]]; then
     echo -e "Annotation already exists on Service Account..Skipping\n"
   else
-    kubectl annotate serviceaccount -n kube-system alb-ingress-controller eks.amazonaws.com/role-arn=${RoleARN}
+    kubectl annotate serviceaccount -n kube-system alb-ingress-controller eks.amazonaws.com/role-arn=${RoleARN} --overwrite
   fi
 }
 
