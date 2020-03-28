@@ -167,6 +167,8 @@ EOF
   check_iam_exists=$(aws iam get-role --role-name ${IAM_ROLE_NAME} --region ${region} | jq -r .Role.Arn)
   if [[ "${check_iam_exists}" == "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE_NAME}" ]]; then
     echo -e "IAM Role already exists: ${check_iam_exists} ...Skipping\n"
+    echo -e "Updating the trust policy"
+    aws iam update-assume-role-policy --role-name ${IAM_ROLE_NAME} --policy-document file://trust.json --region ${region}
   else
     echo -e "\nCreating IAM role and attaching a policy that was previously created\n"
     aws iam create-role --role-name $IAM_ROLE_NAME --assume-role-policy-document file://trust.json --description "${IAM_ROLE_DESCRIPTION}" --region ${region}
